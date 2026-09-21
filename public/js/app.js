@@ -152,7 +152,14 @@
     var byId = {};
     state.live.forEach(function (m) { byId[m.id] = m; });
 
-    el.artistGrid.innerHTML = state.members
+    // 등록 순서는 그대로 두되, 방송 중인 멤버만 맨 앞으로 끌어올림
+    var ordered = state.members.slice().sort(function (a, b) {
+      var aLive = byId[a.id] && byId[a.id].live ? 0 : 1;
+      var bLive = byId[b.id] && byId[b.id].live ? 0 : 1;
+      return aLive - bLive;
+    });
+
+    el.artistGrid.innerHTML = ordered
       .map(function (member) {
         var info = byId[member.id] || {};
         var isLive = !!info.live;
