@@ -35,14 +35,9 @@ HTML이 이미 이 주소를 보고 있어서 붙여넣기만 하면 끝.
 `html` 체크박스를 켜서 각 이미지의 `src`(`https://cafeptthumb-phinf.pstatic.net/...`)를 복사하고
 HTML 안의 해당 파일명 자리에 바꿔 넣는다. 손이 많이 가지만 외부 주소에 의존하지 않는다.
 
-## 2. 카페 주소 바꾸기
+## 2. 카페 주소
 
-로고 카드(하나망 옆)가 카페 홈으로 가도록 되어 있는데 주소가 비어 있다.
-HTML 안의 이 부분을 실제 카페 주소로 교체할 것.
-
-```
-https://cafe.naver.com/여기에_카페주소
-```
+로고 카드(하나망 옆)는 `https://cafe.naver.com/hzentertainment` 로 연결돼 있다.
 
 ## 3. 붙여넣기
 
@@ -74,7 +69,7 @@ https://cafe.naver.com/여기에_카페주소
 | 춘빵이 | s970824 |
 | 키젤 | rydwl0214 |
 | 하나망 | hanamang |
-| Hz 로고 | 카페 홈 (주소 입력 필요) |
+| Hz 로고 | https://cafe.naver.com/hzentertainment |
 | 슈힌 | shuhin0817 |
 | 쿠룽 | kururung |
 | 해또잉 | haettoing |
