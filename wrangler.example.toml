@@ -1,0 +1,19 @@
+# 로컬 개발이나 CLI 배포를 쓸 때만 필요하다.
+# 이 파일을 wrangler.toml 로 복사하고 database_id 를 채운 뒤 사용할 것.
+# (Cloudflare 대시보드에서 Git 연동으로 배포한다면 이 파일 없이도 된다 —
+#  wrangler.toml 이 있으면 대시보드의 빌드·바인딩 설정보다 우선하므로,
+#  database_id 를 비워둔 채로 커밋하면 배포가 깨진다.)
+
+name = "hz-site"
+compatibility_date = "2026-09-01"
+pages_build_output_dir = "public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "hz"
+database_id = "여기에-d1-database-id"
+
+[vars]
+COLLECT_SINCE = "2026-09-21"
+SCAN_INTERVAL_MIN = "10"
+SCAN_MEMBERS_PER_TICK = "2"

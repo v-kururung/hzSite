@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hz ENTERTAINMENT</title>
+<meta name="description" content="Hz ENTERTAINMENT 아티스트 라이브 현황과 소식">
+<link rel="icon" href="/assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Pretendard:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="logo" href="#top" aria-label="Hz ENTERTAINMENT">
+    <img src="/assets/logo.png" alt="Hz ENTERTAINMENT">
+  </a>
+
+  <nav class="gnb" aria-label="주 메뉴">
+    <a href="#live" class="gnb-link">LIVE</a>
+    <a href="#artist" class="gnb-link">ARTIST</a>
+    <a href="#feed" class="gnb-link">FEED</a>
+    <a href="#about" class="gnb-link">ABOUT</a>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- LIVE ---------------------------------------------------------- -->
+  <section id="live" class="section">
+    <div class="section-head">
+      <h2 class="section-title">ON AIR</h2>
+      <div class="section-meta">
+        <span id="live-status" class="meta-text">불러오는 중…</span>
+        <button id="live-refresh" class="btn-refresh" type="button">새로고침</button>
+      </div>
+    </div>
+
+    <div id="live-list" class="live-grid" aria-live="polite">
+      <div class="skeleton-card"></div>
+      <div class="skeleton-card"></div>
+    </div>
+
+    <p id="live-empty" class="empty-note" hidden>지금은 방송 중인 아티스트가 없어요.</p>
+  </section>
+
+  <div class="wave-divider" aria-hidden="true"></div>
+
+  <!-- ARTIST -------------------------------------------------------- -->
+  <section id="artist" class="section">
+    <div class="section-head">
+      <h2 class="section-title">ARTIST</h2>
+      <span class="section-meta meta-text" id="artist-count"></span>
+    </div>
+
+    <div id="artist-grid" class="artist-grid"></div>
+  </section>
+
+  <div class="wave-divider" aria-hidden="true"></div>
+
+  <!-- FEED ---------------------------------------------------------- -->
+  <section id="feed" class="section">
+    <div class="section-head">
+      <h2 class="section-title">FEED</h2>
+      <span class="section-meta meta-text" id="feed-status"></span>
+    </div>
+
+    <div id="feed-filters" class="filter-row" role="group" aria-label="멤버 필터"></div>
+
+    <div id="feed-list" class="feed-list" aria-live="polite"></div>
+
+    <p id="feed-empty" class="empty-note" hidden>아직 모인 글이 없어요. 수집을 시작한 날부터 쌓입니다.</p>
+  </section>
+
+  <div class="wave-divider" aria-hidden="true"></div>
+
+  <!-- ABOUT --------------------------------------------------------- -->
+  <section id="about" class="section about">
+    <h2 class="section-title">ABOUT</h2>
+    <p class="about-text">
+      Hz ENTERTAINMENT는 음악을 중심으로 모인 크리에이터 크루입니다.<br>
+      이 페이지는 멤버들의 SOOP 방송 현황과 소식을 한곳에 모아 보여줍니다.
+    </p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© Hz ENTERTAINMENT</p>
+  <p class="footer-note">방송 정보는 SOOP에서 실시간으로 가져옵니다.</p>
+</footer>
+
+<script src="/js/app.js"></script>
+</body>
+</html>
