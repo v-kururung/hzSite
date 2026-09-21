@@ -196,7 +196,7 @@ function rowToPost(row) {
     readCnt: row.read_cnt || 0,
     commentCnt: row.comment_cnt || 0,
     likeCnt: row.like_cnt || 0,
-    url: `https://www.sooplive.com/station/${row.member_id}/board/${row.title_no}`,
+    url: `https://www.sooplive.com/station/${row.member_id}/post/${row.title_no}`,
   };
 }
 

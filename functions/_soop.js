@@ -8,7 +8,7 @@
 //         display_type 104 = 일반 게시판, 106 = 구분선, 107 = 그룹 헤더, 108/109 = VOD
 //   GET https://chapi.sooplive.co.kr/api/{id}/board/{bbs_no}?page=1&per_page=N&field=title&orderby=reg_date
 //     → { data: [ { title_no, title_name, user_id, reg_date, photos[], count{}, content{summary}, display{bbs_name} } ] }
-//   글 주소: https://www.sooplive.com/station/{id}/board/{title_no}
+//   글 주소: https://www.sooplive.com/station/{id}/post/{title_no}
 
 export const CHAPI = 'https://chapi.sooplive.co.kr/api';
 export const STATION_BASE = 'https://www.sooplive.com/station';
@@ -185,6 +185,6 @@ export function normalizePost(memberId, post) {
     readCnt: counts.read_cnt || 0,
     commentCnt: counts.comment_cnt || 0,
     likeCnt: counts.like_cnt || 0,
-    url: `${STATION_BASE}/${memberId}/board/${post.title_no}`,
+    url: `${STATION_BASE}/${memberId}/post/${post.title_no}`,
   };
 }

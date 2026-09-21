@@ -181,35 +181,18 @@ img { display: block; max-width: 100%; }
 
 .live-badge {
   position: absolute;
-  top: 11px;
-  left: 11px;
+  top: 10px;
+  left: 10px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 12px 5px 10px;
-  border-radius: 999px;
+  background: var(--live);
   color: #fff;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.14em;
-  text-shadow: 0 1px 3px rgba(90, 0, 0, 0.45);
-
-  /* 위쪽에 빛이 고인 듯한 반사 + 붉은 유리 */
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.34) 0%,
-      rgba(255, 255, 255, 0.08) 42%,
-      rgba(255, 255, 255, 0) 70%
-    ),
-    rgba(216, 40, 37, 0.66);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    inset 0 -2px 4px rgba(120, 0, 0, 0.18),
-    0 6px 16px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(14px) saturate(190%);
-  -webkit-backdrop-filter: blur(14px) saturate(190%);
+  padding: 4px 9px;
+  border-radius: var(--radius);
 }
 
 .live-dot {
@@ -221,16 +204,6 @@ img { display: block; max-width: 100%; }
 }
 
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.25; } }
-
-/* backdrop-filter 미지원 브라우저에서는 불투명 빨강으로 */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .live-badge,
-  .artist-live-tag {
-    background: var(--live);
-    border-color: rgba(255, 255, 255, 0.35);
-  }
-}
-
 
 .live-body { padding: 16px 18px 18px; }
 
@@ -294,44 +267,80 @@ img { display: block; max-width: 100%; }
   border-radius: 50%;
   overflow: hidden;
   background: var(--bg-soft);
-  border: 1px solid var(--line);
-  transition: border-color 0.2s ease, filter 0.2s ease;
+  box-shadow: 0 6px 18px -10px rgba(0, 0, 0, 0.28);
+  transition: filter 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
 }
 
 .artist-photo img { width: 100%; height: 100%; object-fit: cover; }
 
+/* 사진 위에 얹히는 유리 링 — 위쪽에 빛이 맺히고 아래쪽에 옅게 번진다 */
+.artist-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  background: linear-gradient(
+    158deg,
+    rgba(255, 255, 255, 0.85) 0%,
+    rgba(255, 255, 255, 0.3) 7%,
+    rgba(255, 255, 255, 0.04) 20%,
+    rgba(255, 255, 255, 0) 45%,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(255, 255, 255, 0.12) 88%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
+  box-shadow:
+    inset 0 2px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -2px 3px rgba(255, 255, 255, 0.5),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.45),
+    inset 0 -10px 18px -12px rgba(17, 17, 17, 0.35),
+    0 0 0 1px rgba(17, 17, 17, 0.13);
+  transition: border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
 .artist-card.is-offline .artist-photo { filter: grayscale(1) opacity(0.78); }
-.artist-card:hover .artist-photo { border-color: var(--ink); filter: none; }
-.artist-card.is-live .artist-photo { border-color: var(--live); }
+
+.artist-card:hover .artist-photo {
+  filter: none;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px -10px rgba(0, 0, 0, 0.34);
+}
+
+.artist-card:hover .artist-photo::after {
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow:
+    inset 0 2px 3px rgba(255, 255, 255, 1),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.6),
+    inset 0 -10px 18px -12px rgba(17, 17, 17, 0.4),
+    0 0 0 1px rgba(17, 17, 17, 0.22);
+}
+
+/* 방송 중일 땐 링에 붉은 기가 돈다 */
+.artist-card.is-live .artist-photo::after {
+  border-color: rgba(255, 150, 147, 0.85);
+  box-shadow:
+    inset 0 2px 2px rgba(255, 255, 255, 0.95),
+    inset 0 -2px 3px rgba(255, 210, 208, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+    0 0 0 1.5px rgba(216, 40, 37, 0.55),
+    0 4px 16px -6px rgba(216, 40, 37, 0.5);
+}
 
 .artist-live-tag {
   position: absolute;
   left: 50%;
-  bottom: 9px;
+  bottom: 8px;
   transform: translateX(-50%);
-  padding: 3px 10px;
-  border-radius: 999px;
+  background: var(--live);
   color: #fff;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.12em;
-  text-shadow: 0 1px 3px rgba(90, 0, 0, 0.45);
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.36) 0%,
-      rgba(255, 255, 255, 0.08) 45%,
-      rgba(255, 255, 255, 0) 72%
-    ),
-    rgba(216, 40, 37, 0.66);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    inset 0 -2px 4px rgba(120, 0, 0, 0.18),
-    0 4px 12px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(12px) saturate(190%);
-  -webkit-backdrop-filter: blur(12px) saturate(190%);
+  padding: 2px 8px;
+  border-radius: var(--radius);
 }
 
 .artist-name { font-size: 13px; font-weight: 500; margin-top: 11px; }
