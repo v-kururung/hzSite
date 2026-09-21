@@ -23,11 +23,11 @@ public/cafe/02-heochuin-a.png
 ...
 ```
 
-배포되면 `https://hzsite.pages.dev/cafe/01-header.png` 로 열린다.
+배포되면 `https://hzsite.pages.dev/hz-cafe/cafe/01-header.png` 로 열린다.
 HTML이 이미 이 주소를 보고 있어서 붙여넣기만 하면 끝.
 
 > Pages 프로젝트 이름을 `hzsite` 가 아닌 다른 걸로 만들었다면
-> HTML 안의 `https://hzsite.pages.dev/cafe` 를 실제 주소로 바꿔야 한다.
+> HTML 안의 `https://hzsite.pages.dev/hz-cafe/cafe` 를 실제 주소로 바꿔야 한다.
 
 ### B. 네이버에 직접 올리기
 
