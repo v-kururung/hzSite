@@ -266,7 +266,6 @@
 
         return (
           '<a class="feed-item" href="' + escapeHtml(post.url) + '" target="_blank" rel="noopener">' +
-            thumb +
             '<div class="feed-main">' +
               '<div class="feed-top">' +
                 '<span class="feed-author">' + escapeHtml(post.memberName) + '</span>' +
@@ -281,6 +280,7 @@
                 '<span>추천 ' + escapeHtml(formatCount(post.likeCnt) || '0') + '</span>' +
               '</div>' +
             '</div>' +
+            thumb +
           '</a>'
         );
       })

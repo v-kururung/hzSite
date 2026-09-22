@@ -265,7 +265,7 @@ img { display: block; max-width: 100%; }
   width: 100%;
   aspect-ratio: 1;
   border-radius: 50%;
-  padding: 9px;                 /* 유리 테의 두께 */
+  padding: 5px;                 /* 유리 테의 두께 */
   background:
     linear-gradient(
       158deg,
@@ -279,9 +279,9 @@ img { display: block; max-width: 100%; }
     );
   box-shadow:
     0 0 0 1px rgba(17, 17, 17, 0.1),
-    0 14px 28px -14px rgba(17, 17, 17, 0.5),
-    inset 0 2px 3px rgba(255, 255, 255, 1),
-    inset 0 -3px 5px rgba(255, 255, 255, 0.8),
+    0 11px 22px -13px rgba(17, 17, 17, 0.45),
+    inset 0 1.5px 2px rgba(255, 255, 255, 1),
+    inset 0 -2px 3.5px rgba(255, 255, 255, 0.8),
     inset 0 0 0 1px rgba(255, 255, 255, 0.75);
   transition: filter 0.24s ease, box-shadow 0.24s ease, transform 0.24s ease;
 }
@@ -297,7 +297,7 @@ img { display: block; max-width: 100%; }
 .artist-photo::before {
   content: "";
   position: absolute;
-  inset: 9px;
+  inset: 5px;
   z-index: 2;
   border-radius: 50%;
   pointer-events: none;
@@ -309,8 +309,8 @@ img { display: block; max-width: 100%; }
     rgba(255, 255, 255, 0) 100%
   );
   box-shadow:
-    inset 0 3px 7px rgba(17, 17, 17, 0.3),
-    inset 0 -2px 5px rgba(255, 255, 255, 0.55);
+    inset 0 2px 5px rgba(17, 17, 17, 0.26),
+    inset 0 -1.5px 3.5px rgba(255, 255, 255, 0.5);
 }
 
 /* 유리 테 위에 맺히는 빛 — 왼쪽 위 큰 반사, 오른쪽 아래 되비침 */
@@ -322,8 +322,8 @@ img { display: block; max-width: 100%; }
   border-radius: 50%;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 52% 30% at 30% 7%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 72%),
-    radial-gradient(ellipse 34% 20% at 75% 94%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 72%);
+    radial-gradient(ellipse 46% 24% at 30% 5%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 70%),
+    radial-gradient(ellipse 30% 16% at 75% 96%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
 }
 
 .artist-card.is-offline .artist-photo { filter: grayscale(1) opacity(0.82); }
@@ -333,9 +333,9 @@ img { display: block; max-width: 100%; }
   transform: translateY(-3px);
   box-shadow:
     0 0 0 1px rgba(17, 17, 17, 0.16),
-    0 20px 34px -14px rgba(17, 17, 17, 0.55),
-    inset 0 2px 4px rgba(255, 255, 255, 1),
-    inset 0 -3px 6px rgba(255, 255, 255, 0.9),
+    0 16px 28px -13px rgba(17, 17, 17, 0.5),
+    inset 0 1.5px 3px rgba(255, 255, 255, 1),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.9),
     inset 0 0 0 1px rgba(255, 255, 255, 0.9);
 }
 
@@ -354,9 +354,9 @@ img { display: block; max-width: 100%; }
     );
   box-shadow:
     0 0 0 1px rgba(216, 40, 37, 0.35),
-    0 14px 30px -14px rgba(216, 40, 37, 0.55),
-    inset 0 2px 3px rgba(255, 255, 255, 1),
-    inset 0 -3px 5px rgba(255, 255, 255, 0.8),
+    0 11px 24px -13px rgba(216, 40, 37, 0.5),
+    inset 0 1.5px 2px rgba(255, 255, 255, 1),
+    inset 0 -2px 3.5px rgba(255, 255, 255, 0.8),
     inset 0 0 0 1px rgba(255, 255, 255, 0.8);
 }
 
@@ -427,6 +427,7 @@ img { display: block; max-width: 100%; }
   flex: 0 0 96px;
   width: 96px;
   height: 96px;
+  margin-left: auto;          /* 항상 오른쪽 끝에 붙는다 */
   border-radius: var(--radius);
   object-fit: cover;
   background: var(--bg-soft);
