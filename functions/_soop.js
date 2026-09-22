@@ -53,12 +53,15 @@ export async function fetchStation(member) {
   const broad = raw.broad || null;
   const live = !!broad;
 
+  // display_type 104 = 일반 게시판.
+  // auth_no 가 101 이 아니면 애청자 공개 등 제한 게시판이라 비로그인으로는 못 읽는다.
   const boards = (st.menus || [])
-    .filter((menu) => menu.display_type === 104 && menu.name)
+    .filter((menu) => menu.display_type === 104 && menu.name && menu.auth_no === 101)
     .map((menu) => ({
       no: menu.bbs_no,
       name: String(menu.name).trim(),
       wAuth: menu.w_auth_no,
+      rAuth: menu.auth_no,
     }));
 
   return {

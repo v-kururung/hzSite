@@ -17,8 +17,8 @@ const REFRESH_COOLDOWN_MS = 20 * 1000;
 
 const DEFAULT_COLLECT_SINCE = '2026-09-21';
 const DEFAULT_SCAN_INTERVAL_MIN = 4;
-const DEFAULT_SCAN_MEMBERS_PER_TICK = 4;
-const MAX_BOARDS_PER_MEMBER = 6;
+const DEFAULT_SCAN_MEMBERS_PER_TICK = 2;
+const MAX_BOARDS_PER_MEMBER = 12;
 const POSTS_PER_BOARD = 10;
 
 export async function onRequest(context) {
@@ -250,10 +250,11 @@ async function scanMember(env, member) {
     }
   }
 
-  // 쓰기 권한이 좁은 게시판(= 방송국 주인만 쓰는 곳)부터 훑는다.
-  // 게시판이 20개 가까운 멤버도 있어서, 앞에서 자르면 정작 본인 글 게시판을 놓친다.
+  // 읽을 수 없는 게시판은 목록 단계에서 이미 빠졌다.
+  // 남은 것 중 쓰기 권한이 좁은 곳(= 주인이 쓰는 곳)부터 훑되, 12개까지 본다.
   const targetBoards = boards
     .slice()
+    .filter((board) => board.rAuth === undefined || board.rAuth === 101)
     .sort(function (a, b) {
       return (a.wAuth || 999) - (b.wAuth || 999);
     })
