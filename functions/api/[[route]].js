@@ -16,9 +16,9 @@ const LIVE_TTL_SEC = 60;
 const REFRESH_COOLDOWN_MS = 20 * 1000;
 
 const DEFAULT_COLLECT_SINCE = '2026-09-21';
-const DEFAULT_SCAN_INTERVAL_MIN = 10;
-const DEFAULT_SCAN_MEMBERS_PER_TICK = 2;
-const MAX_BOARDS_PER_MEMBER = 10;
+const DEFAULT_SCAN_INTERVAL_MIN = 4;
+const DEFAULT_SCAN_MEMBERS_PER_TICK = 4;
+const MAX_BOARDS_PER_MEMBER = 6;
 const POSTS_PER_BOARD = 10;
 
 export async function onRequest(context) {
@@ -250,7 +250,14 @@ async function scanMember(env, member) {
     }
   }
 
-  const targetBoards = boards.slice(0, MAX_BOARDS_PER_MEMBER);
+  // 쓰기 권한이 좁은 게시판(= 방송국 주인만 쓰는 곳)부터 훑는다.
+  // 게시판이 20개 가까운 멤버도 있어서, 앞에서 자르면 정작 본인 글 게시판을 놓친다.
+  const targetBoards = boards
+    .slice()
+    .sort(function (a, b) {
+      return (a.wAuth || 999) - (b.wAuth || 999);
+    })
+    .slice(0, MAX_BOARDS_PER_MEMBER);
   const collected = [];
 
   for (const board of targetBoards) {

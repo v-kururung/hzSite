@@ -265,68 +265,99 @@ img { display: block; max-width: 100%; }
   width: 100%;
   aspect-ratio: 1;
   border-radius: 50%;
-  overflow: hidden;
-  background: var(--bg-soft);
-  box-shadow: 0 6px 18px -10px rgba(0, 0, 0, 0.28);
-  transition: filter 0.22s ease, box-shadow 0.22s ease, transform 0.22s ease;
+  padding: 9px;                 /* 유리 테의 두께 */
+  background:
+    linear-gradient(
+      158deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0.72) 12%,
+      rgba(232, 235, 241, 0.5) 30%,
+      rgba(203, 208, 218, 0.42) 48%,
+      rgba(240, 242, 246, 0.6) 66%,
+      rgba(255, 255, 255, 0.95) 88%,
+      rgba(255, 255, 255, 1) 100%
+    );
+  box-shadow:
+    0 0 0 1px rgba(17, 17, 17, 0.1),
+    0 14px 28px -14px rgba(17, 17, 17, 0.5),
+    inset 0 2px 3px rgba(255, 255, 255, 1),
+    inset 0 -3px 5px rgba(255, 255, 255, 0.8),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+  transition: filter 0.24s ease, box-shadow 0.24s ease, transform 0.24s ease;
 }
 
-.artist-photo img { width: 100%; height: 100%; object-fit: cover; }
+.artist-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
 
-/* 사진 위에 얹히는 유리 링 — 위쪽에 빛이 맺히고 아래쪽에 옅게 번진다 */
+/* 사진이 유리 아래로 내려앉은 느낌 — 안쪽 그림자 + 위쪽 반사 */
+.artist-photo::before {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  z-index: 2;
+  border-radius: 50%;
+  pointer-events: none;
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.16) 14%,
+    rgba(255, 255, 255, 0) 34%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  box-shadow:
+    inset 0 3px 7px rgba(17, 17, 17, 0.3),
+    inset 0 -2px 5px rgba(255, 255, 255, 0.55);
+}
+
+/* 유리 테 위에 맺히는 빛 — 왼쪽 위 큰 반사, 오른쪽 아래 되비침 */
 .artist-photo::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 3;
   border-radius: 50%;
   pointer-events: none;
-  border: 1.5px solid rgba(255, 255, 255, 0.55);
-  background: linear-gradient(
-    158deg,
-    rgba(255, 255, 255, 0.85) 0%,
-    rgba(255, 255, 255, 0.3) 7%,
-    rgba(255, 255, 255, 0.04) 20%,
-    rgba(255, 255, 255, 0) 45%,
-    rgba(255, 255, 255, 0) 70%,
-    rgba(255, 255, 255, 0.12) 88%,
-    rgba(255, 255, 255, 0.45) 100%
-  );
-  box-shadow:
-    inset 0 2px 2px rgba(255, 255, 255, 0.95),
-    inset 0 -2px 3px rgba(255, 255, 255, 0.5),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.45),
-    inset 0 -10px 18px -12px rgba(17, 17, 17, 0.35),
-    0 0 0 1px rgba(17, 17, 17, 0.13);
-  transition: border-color 0.22s ease, box-shadow 0.22s ease;
+  background:
+    radial-gradient(ellipse 52% 30% at 30% 7%, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 72%),
+    radial-gradient(ellipse 34% 20% at 75% 94%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 72%);
 }
 
-.artist-card.is-offline .artist-photo { filter: grayscale(1) opacity(0.78); }
+.artist-card.is-offline .artist-photo { filter: grayscale(1) opacity(0.82); }
 
 .artist-card:hover .artist-photo {
   filter: none;
-  transform: translateY(-2px);
-  box-shadow: 0 12px 26px -10px rgba(0, 0, 0, 0.34);
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 0 1px rgba(17, 17, 17, 0.16),
+    0 20px 34px -14px rgba(17, 17, 17, 0.55),
+    inset 0 2px 4px rgba(255, 255, 255, 1),
+    inset 0 -3px 6px rgba(255, 255, 255, 0.9),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.9);
 }
 
-.artist-card:hover .artist-photo::after {
-  border-color: rgba(255, 255, 255, 0.8);
+/* 방송 중이면 유리 테에 붉은 기가 돈다 */
+.artist-card.is-live .artist-photo {
+  background:
+    linear-gradient(
+      158deg,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 236, 235, 0.8) 12%,
+      rgba(255, 196, 194, 0.55) 32%,
+      rgba(233, 108, 105, 0.45) 50%,
+      rgba(255, 210, 208, 0.6) 68%,
+      rgba(255, 246, 246, 0.95) 88%,
+      rgba(255, 255, 255, 1) 100%
+    );
   box-shadow:
+    0 0 0 1px rgba(216, 40, 37, 0.35),
+    0 14px 30px -14px rgba(216, 40, 37, 0.55),
     inset 0 2px 3px rgba(255, 255, 255, 1),
-    inset 0 -2px 4px rgba(255, 255, 255, 0.6),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.6),
-    inset 0 -10px 18px -12px rgba(17, 17, 17, 0.4),
-    0 0 0 1px rgba(17, 17, 17, 0.22);
-}
-
-/* 방송 중일 땐 링에 붉은 기가 돈다 */
-.artist-card.is-live .artist-photo::after {
-  border-color: rgba(255, 150, 147, 0.85);
-  box-shadow:
-    inset 0 2px 2px rgba(255, 255, 255, 0.95),
-    inset 0 -2px 3px rgba(255, 210, 208, 0.6),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.5),
-    0 0 0 1.5px rgba(216, 40, 37, 0.55),
-    0 4px 16px -6px rgba(216, 40, 37, 0.5);
+    inset 0 -3px 5px rgba(255, 255, 255, 0.8),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
 }
 
 .artist-live-tag {
