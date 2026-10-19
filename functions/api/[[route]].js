@@ -8,7 +8,7 @@
 // 바인딩: DB (D1)
 // 환경변수(선택): COLLECT_SINCE (기본 2026-09-21), SCAN_INTERVAL_MIN, SCAN_MEMBERS_PER_TICK
 
-import { MEMBERS, findMember } from '../_members.js';
+import { MEMBERS, MEMBER_IDS, findMember } from '../_members.js';
 import { fetchStation, offlineFallback, fetchBoardPosts, normalizePost } from '../_soop.js';
 
 const LIVE_CACHE_KEY = 'https://hz-site.internal/cache/live-v1';
@@ -154,22 +154,32 @@ async function handleFeed(context, url) {
   const since = collectSince(env);
   let rows;
   if (memberFilter) {
-    rows = await db
-      .prepare(
-        `SELECT * FROM posts
-         WHERE member_id = ?1 AND reg_date >= ?2
-         ORDER BY reg_date DESC LIMIT ?3`
-      )
-      .bind(memberFilter, since, limit)
-      .all();
+    // 탈퇴한 멤버를 지목하면 빈 목록을 돌려준다
+    if (MEMBER_IDS.indexOf(memberFilter) === -1) {
+      rows = { results: [] };
+    } else {
+      rows = await db
+        .prepare(
+          `SELECT * FROM posts
+           WHERE member_id = ?1 AND reg_date >= ?2
+           ORDER BY reg_date DESC LIMIT ?3`
+        )
+        .bind(memberFilter, since, limit)
+        .all();
+    }
   } else {
+    // 지금 소속된 멤버의 글만 — 탈퇴한 멤버 글은 D1 에 남아 있어도 노출되지 않는다
+    const slots = MEMBER_IDS.map(function (_, index) {
+      return '?' + (index + 3);
+    }).join(', ');
+
     rows = await db
       .prepare(
         `SELECT * FROM posts
-         WHERE reg_date >= ?1
+         WHERE reg_date >= ?1 AND member_id IN (${slots})
          ORDER BY reg_date DESC LIMIT ?2`
       )
-      .bind(since, limit)
+      .bind(since, limit, ...MEMBER_IDS)
       .all();
   }
 
