@@ -183,11 +183,34 @@ async function handleFeed(context, url) {
       .all();
   }
 
+  // 화면에 몇 개를 띄우든, 칩에 찍히는 숫자는 항상 DB 전체 기준이어야 한다
+  const countSlots = MEMBER_IDS.map(function (_, index) {
+    return '?' + (index + 2);
+  }).join(', ');
+
+  const countRows = await db
+    .prepare(
+      `SELECT member_id, COUNT(*) AS n FROM posts
+       WHERE reg_date >= ?1 AND member_id IN (${countSlots})
+       GROUP BY member_id`
+    )
+    .bind(since, ...MEMBER_IDS)
+    .all();
+
+  const counts = {};
+  let total = 0;
+  (countRows.results || []).forEach(function (row) {
+    counts[row.member_id] = row.n;
+    total += row.n;
+  });
+
   const state = await readScanState(db);
   return json({
     since,
     updatedAt: state.lastScanAt,
     scannedMembers: state.scannedCount,
+    counts,
+    total,
     posts: (rows.results || []).map(rowToPost),
   });
 }

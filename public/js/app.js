@@ -10,6 +10,8 @@
     members: [],
     live: [],
     posts: [],
+    counts: {},
+    total: 0,
     activeFilter: 'all',
     lastManualRefresh: 0,
   };
@@ -216,14 +218,12 @@
   /* ---------------------------------------------------------------- */
 
   function renderFilters() {
-    var counts = {};
-    state.posts.forEach(function (post) {
-      counts[post.memberId] = (counts[post.memberId] || 0) + 1;
-    });
+    // 지금 화면에 뜬 글이 아니라 DB에 쌓인 전체 건수를 쓴다
+    var counts = state.counts || {};
 
     var chips = ['<button type="button" class="chip' +
       (state.activeFilter === 'all' ? ' is-active' : '') +
-      '" data-filter="all">전체 ' + state.posts.length + '</button>'];
+      '" data-filter="all">전체 ' + (state.total || 0) + '</button>'];
 
     state.members.forEach(function (member) {
       var count = counts[member.id] || 0;
@@ -240,9 +240,7 @@
   }
 
   function renderFeed() {
-    var posts = state.activeFilter === 'all'
-      ? state.posts
-      : state.posts.filter(function (post) { return post.memberId === state.activeFilter; });
+    var posts = state.posts;
 
     if (!posts.length) {
       el.feedList.innerHTML = '';
@@ -287,17 +285,28 @@
       .join('');
   }
 
-  function loadFeed(manual) {
-    var url = '/api/feed?limit=80' + (manual ? '&refresh=1' : '');
+  function loadFeed(manual, memberId) {
+    // 멤버를 고르면 그 사람 글을 전부, 전체 보기면 최신 80개
+    var url = memberId
+      ? '/api/feed?limit=200&member=' + encodeURIComponent(memberId)
+      : '/api/feed?limit=80';
+    if (manual) url += '&refresh=1';
+
+    el.feedStatus.textContent = '불러오는 중…';
 
     return getJson(url)
       .then(function (data) {
         state.posts = data.posts || [];
+        state.counts = data.counts || {};
+        state.total = data.total || 0;
         renderFilters();
         renderFeed();
 
         if (data.since) {
-          el.feedStatus.textContent = data.since + '부터 수집 · ' + state.posts.length + '개';
+          var shown = memberId
+            ? state.posts.length + '개'
+            : state.posts.length + '개 / 전체 ' + state.total + '개';
+          el.feedStatus.textContent = data.since + '부터 수집 · ' + shown;
         }
         el.feedEmpty.textContent =
           '아직 모인 글이 없어요. ' + (data.since || '') + '부터 쌓입니다.';
@@ -317,9 +326,12 @@
   el.feedFilters.addEventListener('click', function (event) {
     var button = event.target.closest('.chip');
     if (!button) return;
-    state.activeFilter = button.getAttribute('data-filter');
+    var filter = button.getAttribute('data-filter');
+    if (filter === state.activeFilter) return;
+
+    state.activeFilter = filter;
     renderFilters();
-    renderFeed();
+    loadFeed(false, filter === 'all' ? null : filter);
   });
 
   el.liveRefresh.addEventListener('click', function () {
@@ -330,7 +342,8 @@
     el.liveRefresh.disabled = true;
     el.liveRefresh.textContent = '갱신 중…';
 
-    Promise.all([loadLive(true), loadFeed(true)]).then(function () {
+    var current = state.activeFilter === 'all' ? null : state.activeFilter;
+    Promise.all([loadLive(true), loadFeed(true, current)]).then(function () {
       setTimeout(function () {
         el.liveRefresh.disabled = false;
         el.liveRefresh.textContent = '새로고침';
